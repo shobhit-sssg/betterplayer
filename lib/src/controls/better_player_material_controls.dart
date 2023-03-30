@@ -202,7 +202,10 @@ class _BetterPlayerMaterialControlsState
                     if (_controlsConfiguration.enablePip)
                       _buildPipButtonWrapperWidget(
                           controlsNotVisible, _onPlayerHide),
-                    _buildBackButton(),
+                    if (_controlsConfiguration.enableBackButton)
+                      _buildBackButton()
+                    else
+                      const SizedBox.shrink(),
                     _buildMoreButton(),
                   ],
                 ),
@@ -732,17 +735,17 @@ class _BetterPlayerMaterialControlsState
       alignment: Alignment.centerLeft,
       child: BetterPlayerMaterialClickableWidget(
         onTap: () {
-          // if (_controlsConfiguration.onBackButton != null) {
-          //   _controlsConfiguration.onBackButton!();
-          // }
+          if (_controlsConfiguration.onBackButton != null) {
+            _controlsConfiguration.onBackButton!();
+          }
           Navigator.pop(context);
           if (_betterPlayerController!.isFullScreen) Navigator.pop(context);
         },
         child: Padding(
           padding: const EdgeInsets.all(8),
           child: Icon(
-            Icons.arrow_back,
-            color: Colors.redAccent,
+            _controlsConfiguration.backButtonIcon,
+            color: _controlsConfiguration.iconsColor,
           ),
         ),
       ),
