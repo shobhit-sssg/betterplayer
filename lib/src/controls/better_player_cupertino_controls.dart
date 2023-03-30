@@ -490,7 +490,9 @@ class _BetterPlayerCupertinoControlsState
       ),
       child: Row(
         children: <Widget>[
-          if (_controlsConfiguration.enableBackButton) _buildBackButton(),
+          if (_controlsConfiguration.enableBackButton &&
+              _betterPlayerController!.isFullScreen)
+            _buildBackButton(),
           if (_controlsConfiguration.enableFullscreen)
             _buildExpandButton(
               backgroundColor,
@@ -551,16 +553,9 @@ class _BetterPlayerCupertinoControlsState
         if (_controlsConfiguration.onBackButton != null) {
           _controlsConfiguration.onBackButton!();
         }
-        Navigator.pop(context);
-        if (_betterPlayerController!.isFullScreen) {
-          setState(() {
-            _betterPlayerController!.exitFullScreen();
-          });
-          Navigator.pop(context);
-        }
       },
       child: Padding(
-        padding: const EdgeInsets.all(8),
+        padding: const EdgeInsets.all(16),
         child: Icon(
           _controlsConfiguration.backButtonIcon,
           color: _controlsConfiguration.iconsColor,

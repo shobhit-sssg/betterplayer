@@ -202,7 +202,8 @@ class _BetterPlayerMaterialControlsState
                     if (_controlsConfiguration.enablePip)
                       _buildPipButtonWrapperWidget(
                           controlsNotVisible, _onPlayerHide),
-                    if (_controlsConfiguration.enableBackButton)
+                    if (_controlsConfiguration.enableBackButton &&
+                        _betterPlayerController!.isFullScreen)
                       _buildBackButton()
                     else
                       const SizedBox.shrink(),
@@ -738,11 +739,11 @@ class _BetterPlayerMaterialControlsState
           if (_controlsConfiguration.onBackButton != null) {
             _controlsConfiguration.onBackButton!();
           }
-          Navigator.pop(context);
-          if (_betterPlayerController!.isFullScreen) Navigator.pop(context);
+          // Navigator.pop(context);
+          // if (_betterPlayerController!.isFullScreen) Navigator.pop(context);
         },
         child: Padding(
-          padding: const EdgeInsets.all(8),
+          padding: const EdgeInsets.all(16),
           child: Icon(
             _controlsConfiguration.backButtonIcon,
             color: _controlsConfiguration.iconsColor,
