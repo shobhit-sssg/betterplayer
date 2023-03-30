@@ -195,7 +195,7 @@ class _BetterPlayerMaterialControlsState
               onEnd: _onPlayerHide,
               child: Container(
                 height: _controlsConfiguration.controlBarHeight,
-                width: double.infinity,
+                width: MediaQuery.of(context).size.width,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -744,7 +744,7 @@ class _BetterPlayerMaterialControlsState
           padding: const EdgeInsets.all(8),
           child: Icon(
             Icons.arrow_back,
-            color: _controlsConfiguration.iconsColor,
+            color: Colors.redAccent,
           ),
         ),
       ),
