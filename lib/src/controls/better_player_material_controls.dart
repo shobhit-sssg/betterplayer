@@ -201,9 +201,7 @@ class _BetterPlayerMaterialControlsState
                   children: [
                     if (_controlsConfiguration.enablePip)
                       _buildPipButtonWrapperWidget(
-                          controlsNotVisible, _onPlayerHide)
-                    else
-                      const SizedBox(),
+                          controlsNotVisible, _onPlayerHide),
                     _buildBackButton(),
                     _buildMoreButton(),
                   ],
