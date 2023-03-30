@@ -197,13 +197,14 @@ class _BetterPlayerMaterialControlsState
                 height: _controlsConfiguration.controlBarHeight,
                 width: double.infinity,
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     if (_controlsConfiguration.enablePip)
                       _buildPipButtonWrapperWidget(
                           controlsNotVisible, _onPlayerHide)
                     else
                       const SizedBox(),
+                    _buildBackButton(),
                     _buildMoreButton(),
                   ],
                 ),
@@ -726,6 +727,28 @@ class _BetterPlayerMaterialControlsState
   void _onPlayerHide() {
     _betterPlayerController!.toggleControlsVisibility(!controlsNotVisible);
     widget.onControlsVisibilityChanged(!controlsNotVisible);
+  }
+
+  Widget _buildBackButton() {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: BetterPlayerMaterialClickableWidget(
+        onTap: () {
+          // if (_controlsConfiguration.onBackButton != null) {
+          //   _controlsConfiguration.onBackButton!();
+          // }
+          Navigator.pop(context);
+          if (_betterPlayerController!.isFullScreen) Navigator.pop(context);
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(8),
+          child: Icon(
+            Icons.arrow_back,
+            color: _controlsConfiguration.iconsColor,
+          ),
+        ),
+      ),
+    );
   }
 
   Widget? _buildLoadingWidget() {
