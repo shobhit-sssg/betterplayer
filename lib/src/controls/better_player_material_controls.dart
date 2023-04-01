@@ -308,6 +308,8 @@ class _BetterPlayerMaterialControlsState
                     _buildMuteButton(_controller)
                   else
                     const SizedBox(),
+                  if (_betterPlayerController!.isLiveStream())
+                    _buildGoLiveWidget(),
                   if (_controlsConfiguration.enableFullscreen)
                     _buildExpandButton()
                   else
@@ -323,6 +325,18 @@ class _BetterPlayerMaterialControlsState
                   : const SizedBox(),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildGoLiveWidget() {
+    return InkWell(
+      onTap: () => _betterPlayerController!.videoPlayerController?.refresh,
+      child: Text(
+        'Go ${_betterPlayerController!.translations.controlsLive}',
+        style: TextStyle(
+            color: _controlsConfiguration.liveTextColor,
+            fontWeight: FontWeight.bold),
       ),
     );
   }
