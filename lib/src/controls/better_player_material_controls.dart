@@ -330,13 +330,16 @@ class _BetterPlayerMaterialControlsState
   }
 
   Widget _buildGoLiveWidget() {
-    return InkWell(
-      onTap: () => _betterPlayerController!.videoPlayerController?.refresh,
-      child: Text(
-        'Go ${_betterPlayerController!.translations.controlsLive}',
-        style: TextStyle(
-            color: _controlsConfiguration.liveTextColor,
-            fontWeight: FontWeight.bold),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: InkWell(
+        onTap: () => _betterPlayerController!.videoPlayerController?.refresh,
+        child: Text(
+          'GO ${_betterPlayerController!.translations.controlsLive}',
+          style: TextStyle(
+              color: _controlsConfiguration.liveTextColor,
+              fontWeight: FontWeight.bold),
+        ),
       ),
     );
   }

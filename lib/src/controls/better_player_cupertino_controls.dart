@@ -191,6 +191,8 @@ class _BetterPlayerCupertinoControlsState
                         const SizedBox(),
                       const SizedBox(width: 8),
                       _buildLiveWidget(),
+                      if (_betterPlayerController!.isLiveStream())
+                        _buildGoLiveWidget()
                     ],
                   )
                 : Row(
@@ -222,6 +224,21 @@ class _BetterPlayerCupertinoControlsState
                     ],
                   ),
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildGoLiveWidget() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: InkWell(
+        onTap: () => _betterPlayerController!.videoPlayerController?.refresh,
+        child: Text(
+          'GO ${_betterPlayerController!.translations.controlsLive}',
+          style: TextStyle(
+              color: _controlsConfiguration.liveTextColor,
+              fontWeight: FontWeight.bold),
         ),
       ),
     );
