@@ -304,12 +304,12 @@ class _BetterPlayerMaterialControlsState
                         ? Expanded(child: _buildPosition())
                         : const SizedBox(),
                   const Spacer(),
+                  if (_betterPlayerController!.isLiveStream())
+                    _buildGoLiveWidget(),
                   if (_controlsConfiguration.enableMute)
                     _buildMuteButton(_controller)
                   else
                     const SizedBox(),
-                  if (_betterPlayerController!.isLiveStream())
-                    _buildGoLiveWidget(),
                   if (_controlsConfiguration.enableFullscreen)
                     _buildExpandButton()
                   else
