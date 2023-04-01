@@ -465,6 +465,9 @@ class _BetterPlayerMaterialControlsState
 
   Widget _buildReplayButton(VideoPlayerController controller) {
     final bool isFinished = isVideoFinished(_latestValue);
+
+
+
     return _buildHitAreaClickableButton(
       icon: isFinished
           ? Icon(
