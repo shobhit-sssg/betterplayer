@@ -399,7 +399,7 @@ class _BetterPlayerMaterialControlsState
       width: double.infinity,
       height: double.infinity,
       child: _betterPlayerController?.isLiveStream() == true
-          ? const SizedBox()
+          ? _buildReplayButton(_controller!)
           : Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [

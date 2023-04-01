@@ -185,10 +185,7 @@ class _BetterPlayerCupertinoControlsState
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       const SizedBox(width: 8),
-                      if (_controlsConfiguration.enablePlayPause)
-                        _buildPlayPause(_controller!, iconColor, barHeight)
-                      else
-                        const SizedBox(),
+                      _buildPlayPause(_controller!, iconColor, barHeight),
                       const SizedBox(width: 8),
                       _buildLiveWidget(),
                       if (_betterPlayerController!.isLiveStream())
