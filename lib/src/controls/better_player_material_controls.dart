@@ -333,7 +333,11 @@ class _BetterPlayerMaterialControlsState
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: InkWell(
-        onTap: () => _betterPlayerController!.videoPlayerController?.refresh,
+        onTap: () async {
+          Duration? duration =
+              await _betterPlayerController!.videoPlayerController!.position!;
+          _betterPlayerController!.videoPlayerController?.seekTo(duration);
+        },
         child: Text(
           'GO ${_betterPlayerController!.translations.controlsLive}',
           style: TextStyle(
@@ -399,7 +403,7 @@ class _BetterPlayerMaterialControlsState
       width: double.infinity,
       height: double.infinity,
       child: _betterPlayerController?.isLiveStream() == true
-          ? _buildReplayButton(_controller!)
+          ? _buildPlayPause(_betterPlayerController!.videoPlayerController!)
           : Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -465,8 +469,6 @@ class _BetterPlayerMaterialControlsState
 
   Widget _buildReplayButton(VideoPlayerController controller) {
     final bool isFinished = isVideoFinished(_latestValue);
-
-
 
     return _buildHitAreaClickableButton(
       icon: isFinished
