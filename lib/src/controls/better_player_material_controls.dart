@@ -391,7 +391,9 @@ class _BetterPlayerMaterialControlsState
         child: AnimatedOpacity(
           opacity: controlsNotVisible ? 0.0 : 1.0,
           duration: _controlsConfiguration.controlsHideTime,
-          child: _buildMiddleRow(),
+          child: _betterPlayerController!.isLiveStream()
+              ? _buildPlayPause(_controller!)
+              : _buildMiddleRow(),
         ),
       ),
     );
@@ -403,7 +405,7 @@ class _BetterPlayerMaterialControlsState
       width: double.infinity,
       height: double.infinity,
       child: _betterPlayerController?.isLiveStream() == true
-          ? _buildPlayPause(_betterPlayerController!.videoPlayerController!)
+          ? const SizedBox()
           : Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
