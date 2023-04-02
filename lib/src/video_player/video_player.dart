@@ -680,7 +680,9 @@ class _VideoPlayerState extends State<VideoPlayer> {
     super.didUpdateWidget(oldWidget);
     oldWidget.controller!.removeListener(_listener);
     _textureId = widget.controller!.textureId;
-    widget.controller!.addListener(_listener);
+    if (widget.controller != null && !widget.controller!._isDisposed) {
+      widget.controller!.addListener(_listener);
+    }
   }
 
   @override
