@@ -229,12 +229,21 @@ class _BetterPlayerCupertinoControlsState
   Widget _buildGoLiveWidget() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
-      child: InkWell(
-        onTap: () => _betterPlayerController!.videoPlayerController?.refresh,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(25),
+            ),
+            backgroundColor: _controlsConfiguration.textColor.withOpacity(0.4)),
+        onPressed: () async {
+          Duration? duration =
+              await _betterPlayerController!.videoPlayerController!.position!;
+          _betterPlayerController!.videoPlayerController?.seekTo(duration);
+        },
         child: Text(
           'GO ${_betterPlayerController!.translations.controlsLive}',
           style: TextStyle(
-              color: _controlsConfiguration.liveTextColor,
+              color: _controlsConfiguration.textColor,
               fontWeight: FontWeight.bold),
         ),
       ),

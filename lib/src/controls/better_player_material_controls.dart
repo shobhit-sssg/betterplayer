@@ -332,8 +332,13 @@ class _BetterPlayerMaterialControlsState
   Widget _buildGoLiveWidget() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
-      child: InkWell(
-        onTap: () async {
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(25),
+            ),
+            backgroundColor: _controlsConfiguration.textColor.withOpacity(0.4)),
+        onPressed: () async {
           Duration? duration =
               await _betterPlayerController!.videoPlayerController!.position!;
           _betterPlayerController!.videoPlayerController?.seekTo(duration);
@@ -341,7 +346,7 @@ class _BetterPlayerMaterialControlsState
         child: Text(
           'GO ${_betterPlayerController!.translations.controlsLive}',
           style: TextStyle(
-              color: _controlsConfiguration.liveTextColor,
+              color: _controlsConfiguration.textColor,
               fontWeight: FontWeight.bold),
         ),
       ),
@@ -391,9 +396,7 @@ class _BetterPlayerMaterialControlsState
         child: AnimatedOpacity(
           opacity: controlsNotVisible ? 0.0 : 1.0,
           duration: _controlsConfiguration.controlsHideTime,
-          child: _betterPlayerController!.isLiveStream()
-              ? _buildPlayPause(_controller!)
-              : _buildMiddleRow(),
+          child: _buildMiddleRow(),
         ),
       ),
     );
@@ -404,8 +407,15 @@ class _BetterPlayerMaterialControlsState
       color: _controlsConfiguration.controlBarColor,
       width: double.infinity,
       height: double.infinity,
-      child: _betterPlayerController?.isLiveStream() == true
-          ? const SizedBox()
+      child: _betterPlayerController!.isLiveStream()
+          ? Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                SizedBox(width: MediaQuery.of(context).size.width / 3),
+                Expanded(child: _buildPlayPause(_controller!)),
+                SizedBox(width: MediaQuery.of(context).size.width / 3),
+              ],
+            )
           : Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
