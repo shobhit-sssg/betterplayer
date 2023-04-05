@@ -236,9 +236,7 @@ class _BetterPlayerCupertinoControlsState
             ),
             backgroundColor: _controlsConfiguration.textColor.withOpacity(0.4)),
         onPressed: () async {
-          Duration? duration =
-              await _betterPlayerController!.videoPlayerController!.position!;
-          _betterPlayerController!.videoPlayerController?.seekTo(duration);
+          _betterPlayerController!.retryDataSource();
         },
         child: Text(
           'GO ${_betterPlayerController!.translations.controlsLive}',
