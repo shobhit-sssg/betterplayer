@@ -144,7 +144,7 @@ class BetterPlayerPlugin : FlutterPlugin, ActivityAware, MethodCallHandler {
         call: MethodCall,
         result: MethodChannel.Result,
         textureId: Long,
-        player: BetterPlayer
+        player: BetterPlayer,
     ) {
         when (call.method) {
             SET_DATA_SOURCE_METHOD -> {
@@ -227,7 +227,7 @@ class BetterPlayerPlugin : FlutterPlugin, ActivityAware, MethodCallHandler {
     private fun setDataSource(
         call: MethodCall,
         result: MethodChannel.Result,
-        player: BetterPlayer
+        player: BetterPlayer,
     ) {
         val dataSource = call.argument<Map<String, Any?>>(DATA_SOURCE_PARAMETER)!!
         dataSources.put(getTextureId(player)!!, dataSource)
@@ -389,6 +389,7 @@ class BetterPlayerPlugin : FlutterPlugin, ActivityAware, MethodCallHandler {
             videoPlayers.valueAt(index).disposeRemoteNotifications()
         }
     }
+
     @Suppress("UNCHECKED_CAST")
     private fun <T> getParameter(parameters: Map<String, Any?>?, key: String, defaultValue: T): T {
         if (parameters?.containsKey(key) == true) {
@@ -408,10 +409,15 @@ class BetterPlayerPlugin : FlutterPlugin, ActivityAware, MethodCallHandler {
 
     private fun enablePictureInPicture(player: BetterPlayer) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            player.setupMediaSession(flutterState!!.applicationContext)
-            activity!!.enterPictureInPictureMode(PictureInPictureParams.Builder().build())
-            startPictureInPictureListenerTimer(player)
-            player.onPictureInPictureStatusChanged(true)
+            try {
+                player.setupMediaSession(flutterState!!.applicationContext)
+                activity!!.enterPictureInPictureMode(PictureInPictureParams.Builder().build())
+                startPictureInPictureListenerTimer(player)
+                player.onPictureInPictureStatusChanged(true)
+
+            } catch (e: Exception) {
+                Log.e(TAG, "Enabling pip got failed", e)
+            }
         }
     }
 
@@ -466,7 +472,7 @@ class BetterPlayerPlugin : FlutterPlugin, ActivityAware, MethodCallHandler {
         val binaryMessenger: BinaryMessenger,
         val keyForAsset: KeyForAssetFn,
         val keyForAssetAndPackageName: KeyForAssetAndPackageName,
-        val textureRegistry: TextureRegistry?
+        val textureRegistry: TextureRegistry?,
     ) {
         private val methodChannel: MethodChannel = MethodChannel(binaryMessenger, CHANNEL)
 
