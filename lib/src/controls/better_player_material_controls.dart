@@ -57,6 +57,9 @@ class _BetterPlayerMaterialControlsState
   BetterPlayerControlsConfiguration get betterPlayerControlsConfiguration =>
       _controlsConfiguration;
 
+  double _scaleFactor = 1.0;
+  double _baseScaleFactor = 1.0;
+
   @override
   Widget build(BuildContext context) {
     return buildLTRDirectionality(_buildMainWidget());
@@ -72,6 +75,34 @@ class _BetterPlayerMaterialControlsState
       );
     }
     return GestureDetector(
+      onScaleStart: (details) {
+        _baseScaleFactor = _scaleFactor;
+      },
+      onScaleUpdate: (details) {
+        if (betterPlayerController!.isFullScreen) {
+          setState(() {
+            _scaleFactor = _baseScaleFactor * details.scale;
+            if (_scaleFactor > 1) {
+              if (betterPlayerController!.getFit() == BoxFit.contain) {
+                // print('pinch contain${_scaleFactor}');
+                betterPlayerController!.play();
+                betterPlayerController!.setOverriddenFit(BoxFit.fill);
+              }
+            } else if (_scaleFactor <= 1) {
+              // print('pinch${_scaleFactor}');
+              if (betterPlayerController!.getFit() == BoxFit.fill) {
+                betterPlayerController!.play();
+                betterPlayerController!.setOverriddenFit(BoxFit.contain);
+              }
+              //  _onResize();
+            }
+            if (_scaleFactor > 2 || _scaleFactor < 0) {
+              _baseScaleFactor = 1.0;
+              _scaleFactor = 1.0;
+            }
+          });
+        }
+      },
       onTap: () {
         if (BetterPlayerMultipleGestureDetector.of(context) != null) {
           BetterPlayerMultipleGestureDetector.of(context)!.onTap?.call();
