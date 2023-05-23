@@ -5,6 +5,7 @@
 // Dart imports:
 import 'dart:async';
 import 'dart:io';
+
 import 'package:better_player/src/configuration/better_player_buffering_configuration.dart';
 import 'package:better_player/src/video_player/video_player_platform_interface.dart';
 import 'package:flutter/material.dart';
@@ -615,6 +616,16 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
 
   void refresh() {
     value = value.copyWith();
+  }
+
+  Future<void> enableAutoPIP() async {
+    if (_textureId == null) return;
+    return _videoPlayerPlatform.enableAutoPIP(_textureId);
+  }
+
+  Future<void> disableAutoPIP() async {
+    if (_textureId == null) return;
+    return _videoPlayerPlatform.disableAutoPIP(_textureId);
   }
 
   void setAudioTrack(String? name, int? index) {

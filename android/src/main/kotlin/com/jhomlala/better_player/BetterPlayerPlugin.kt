@@ -5,6 +5,7 @@ package com.jhomlala.better_player
 
 import android.app.Activity
 import android.app.PictureInPictureParams
+import android.app.RemoteAction
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
@@ -12,6 +13,7 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.util.LongSparseArray
+import android.util.Rational
 import com.jhomlala.better_player.BetterPlayerCache.releaseCache
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
@@ -220,6 +222,14 @@ class BetterPlayerPlugin : FlutterPlugin, ActivityAware, MethodCallHandler {
                 dispose(player, textureId)
                 result.success(null)
             }
+            ENABLE_AUTO_PIP->{
+                enableAutoPIP()
+                result.success(null)
+            }
+            DISABLE_AUTO_PIP->{
+                disableAutoPIP()
+                result.success(null)
+            }
             else -> result.notImplemented()
         }
     }
@@ -411,7 +421,14 @@ class BetterPlayerPlugin : FlutterPlugin, ActivityAware, MethodCallHandler {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             try {
                 player.setupMediaSession(flutterState!!.applicationContext)
-                activity!!.enterPictureInPictureMode(PictureInPictureParams.Builder().build())
+                var params = PictureInPictureParams.Builder()
+                params.setAspectRatio(Rational(16,9))
+                if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.S){
+                    params = params.setAutoEnterEnabled(true)
+                            .setSeamlessResizeEnabled(true)
+                }
+                params.setActions(mutableListOf<RemoteAction>())
+                activity!!.enterPictureInPictureMode(params.build())
                 startPictureInPictureListenerTimer(player)
                 player.onPictureInPictureStatusChanged(true)
 
@@ -486,6 +503,35 @@ class BetterPlayerPlugin : FlutterPlugin, ActivityAware, MethodCallHandler {
 
     }
 
+    private fun enableAutoPIP(){
+        try{
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                var params = PictureInPictureParams.Builder()
+                params.setAspectRatio(Rational(16, 9))
+                params = params.setAutoEnterEnabled(true)
+                        .setSeamlessResizeEnabled(true)
+                params.setActions(mutableListOf<RemoteAction>())
+                activity!!.setPictureInPictureParams(params.build())
+            }else{
+                Log.w(TAG,"Auto PIP is not supported on this device")
+            }
+        }catch (e:Exception){
+            Log.e(TAG, "Enabling pip got failed", e)
+
+        }
+    }
+
+    private fun disableAutoPIP(){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
+            var params = PictureInPictureParams.Builder()
+            params.setAspectRatio(Rational(16,9))
+            params = params.setAutoEnterEnabled(false)
+                    .setSeamlessResizeEnabled(false)
+            params.setActions(mutableListOf<RemoteAction>())
+            activity!!.setPictureInPictureParams(params.build())
+        }
+    }
+
     companion object {
         private const val TAG = "BetterPlayerPlugin"
         private const val CHANNEL = "better_player_channel"
@@ -551,5 +597,7 @@ class BetterPlayerPlugin : FlutterPlugin, ActivityAware, MethodCallHandler {
         private const val DISPOSE_METHOD = "dispose"
         private const val PRE_CACHE_METHOD = "preCache"
         private const val STOP_PRE_CACHE_METHOD = "stopPreCache"
+        private const val ENABLE_AUTO_PIP ="enableAutoPip"
+        private const val DISABLE_AUTO_PIP ="disableAutoPip"
     }
 }

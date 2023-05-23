@@ -2,11 +2,13 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 import 'dart:async';
+
 import 'package:better_player/src/configuration/better_player_buffering_configuration.dart';
 import 'package:better_player/src/core/better_player_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+
 import 'video_player_platform_interface.dart';
 
 const MethodChannel _channel = MethodChannel('better_player_channel');
@@ -251,6 +253,26 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   Future<void> disablePictureInPicture(int? textureId) {
     return _channel.invokeMethod<bool>(
       'disablePictureInPicture',
+      <String, dynamic>{
+        'textureId': textureId,
+      },
+    );
+  }
+
+  @override
+  Future<void> enableAutoPIP(int? textureId) {
+    return _channel.invokeMethod<void>(
+      'enableAutoPip',
+      <String, dynamic>{
+        'textureId': textureId,
+      },
+    );
+  }
+
+  @override
+  Future<void> disableAutoPIP(int? textureId) {
+    return _channel.invokeMethod<void>(
+      'disableAutoPip',
       <String, dynamic>{
         'textureId': textureId,
       },
