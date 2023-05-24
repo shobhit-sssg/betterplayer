@@ -1068,7 +1068,7 @@ class BetterPlayerController {
     if (isPipSupported) {
       _wasInFullScreenBeforePiP = _isFullScreen;
       _wasControlsEnabledBeforePiP = _controlsEnabled;
-      setControlsEnabled(false);
+      // setControlsEnabled(false);
       if (defaultTargetPlatform == TargetPlatform.android) {
         // _wasInFullScreenBeforePiP = _isFullScreen;
         await videoPlayerController?.enablePictureInPicture(
