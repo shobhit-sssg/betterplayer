@@ -9,6 +9,7 @@ import 'package:better_player/src/controls/better_player_progress_colors.dart';
 import 'package:better_player/src/core/better_player_controller.dart';
 import 'package:better_player/src/core/better_player_utils.dart';
 import 'package:better_player/src/video_player/video_player.dart';
+
 // Flutter imports:
 import 'package:flutter/material.dart';
 
@@ -317,6 +318,12 @@ class _BetterPlayerMaterialControlsState
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
+            if (_betterPlayerController!.isLiveStream())
+              const SizedBox()
+            else
+              _controlsConfiguration.enableProgressBar
+                  ? _buildProgressBar()
+                  : const SizedBox(),
             Expanded(
               flex: 75,
               child: Row(
@@ -345,12 +352,6 @@ class _BetterPlayerMaterialControlsState
                 ],
               ),
             ),
-            if (_betterPlayerController!.isLiveStream())
-              const SizedBox()
-            else
-              _controlsConfiguration.enableProgressBar
-                  ? _buildProgressBar()
-                  : const SizedBox(),
           ],
         ),
       ),
